@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
+         https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+
+    <display-name>Sectors Classes SOAP Web Services</display-name>
+    
+    <!-- Listener pour JAX-WS -->
+    <listener>
+        <listener-class>
+            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+        </listener-class>
+    </listener>
+
+    <!-- Servlet pour Sectors Web Service -->
+    <servlet>
+        <servlet-name>SectorsWebService</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>SectorsWebService</servlet-name>
+        <url-pattern>/sectorsWebService</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet pour Classes Web Service -->
+    <servlet>
+        <servlet-name>ClassesWebService</servlet-name>
+        <servlet-class>
+            com.sun.xml.ws.transport.http.servlet.WSServlet
+        </servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>ClassesWebService</servlet-name>
+        <url-pattern>/classesWebService</url-pattern>
+    </servlet-mapping>
+
+    <!-- Page d'accueil -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+</web-app>

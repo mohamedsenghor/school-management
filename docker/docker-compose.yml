@@ -1,0 +1,36 @@
+services:
+  mysql-sectors:
+    image: mysql:8.0
+    container_name: mysql-sectors-classes
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: classes_management_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: passer123@
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - backend
+
+  phpmyadmin:
+    container_name: phpmyadmin-sectors
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "8085:80"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      PMA_HOST: mysql-sectors
+      PMA_USER: user
+      PMA_PASSWORD: passer123@
+    depends_on:
+      - mysql-sectors
+    networks:
+      - backend
+
+volumes:
+  mysql_data:
+
+networks:
+  backend:
