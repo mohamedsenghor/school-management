@@ -26,7 +26,11 @@ cd docker
 docker-compose up -d
 ```
 
-Cela démarre un conteneur MySQL accessible sur `localhost:3306`.
+Cela démarre un conteneur MySQL. Puis populer la base de données comme suit :
+
+```bash
+docker exec -i mysql-sectors-classes mysql -u root -proot < ./scripts/create_database.sql
+```
 
 ### Sans Docker
 
@@ -34,7 +38,7 @@ Cela démarre un conteneur MySQL accessible sur `localhost:3306`.
 - Créez la base avec le script :
 
 ```bash
-mysql -u root -p < scripts/create_database.sql
+mysql -u root -proot < ./scripts/create_database.sql
 ```
 
 ## 3. Configurer la connexion à la base de données
@@ -54,7 +58,7 @@ mvn clean install
 
 Le service SOAP sera accessible à une URL du type :
 
-```text
+```txt
 http://localhost:8080/school-management-soap/
 ```
 
@@ -66,7 +70,7 @@ http://localhost:8080/school-management-soap/
 - Créez un nouveau projet SOAP
 - Importez le WSDL disponible à l’URL :
 
-```text
+```txt
 http://localhost:8080/school-management-soap/wsdl/SchoolManagementService.wsdl
 ```
 
@@ -105,7 +109,7 @@ http://localhost:8080/school-management-soap/wsdl/SchoolManagementService.wsdl
    <soapenv:Header/>
    <soapenv:Body>
       <sch:getClass>
-         <id>1</id>
+         <classId>1</classId>
       </sch:getClass>
    </soapenv:Body>
 </soapenv:Envelope>
