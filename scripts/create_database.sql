@@ -1,3 +1,7 @@
+-- Force explicit UTF-8 session settings before any DDL/DML.
+SET NAMES utf8mb4;
+SET CHARACTER SET utf8mb4;
+
 DROP DATABASE IF EXISTS classes_management_db;
 
 CREATE DATABASE classes_management_db

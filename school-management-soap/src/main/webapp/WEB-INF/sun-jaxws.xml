@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0">
-    
+
     <!-- Configuration pour Sectors Web Service -->
-    <endpoint
-        name="SectorsWebService"
-        implementation="com.bassine.soap.webservice.service.SectorsWebServiceImpl"
-        url-pattern="/sectorsWebService" />
+    <endpoint name="SectorsWebService" implementation="dev.blackms.soap.webservice.service.SectorsWebServiceImpl" url-pattern="/sectorsWebService" />
 
     <!-- Configuration pour Classes Web Service -->
-    <endpoint
-        name="ClassesWebService"
-        implementation="com.bassine.soap.webservice.service.ClassesWebServiceImpl"
-        url-pattern="/classesWebService" />
+    <endpoint name="ClassesWebService" implementation="dev.blackms.soap.webservice.service.ClassesWebServiceImpl" url-pattern="/classesWebService" />
 
 </endpoints>

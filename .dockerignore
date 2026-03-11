@@ -1,0 +1,42 @@
+# Fichiers et dossiers à exclure du contexte Docker pour le backend
+
+# Fichiers target de Maven
+target/
+*/target/
+
+# Fichiers de configuration IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Dossiers node_modules (si frontend est dans le même contexte)
+node_modules/
+*/node_modules/
+
+# Fichiers de log
+*.log
+
+# Fichiers temporaires
+*.tmp
+*.bak
+*.swp
+*~
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+README.md
+*.md

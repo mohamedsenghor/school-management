@@ -79,7 +79,7 @@ http://localhost:8080/school-management-soap/wsdl/SchoolManagementService.wsdl
 #### 1. Récupérer tous les secteurs (`getAllSectors`)
 
 ```xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:getAllSectors/>
@@ -90,7 +90,7 @@ http://localhost:8080/school-management-soap/wsdl/SchoolManagementService.wsdl
 #### 2. Créer un secteur (`saveSector`)
 
 ```xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:saveSector>
@@ -105,7 +105,7 @@ http://localhost:8080/school-management-soap/wsdl/SchoolManagementService.wsdl
 #### 3. Récupérer une classe (`getClass`)
 
 ```xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:getClass>
@@ -118,7 +118,7 @@ http://localhost:8080/school-management-soap/wsdl/SchoolManagementService.wsdl
 #### 4. Créer une classe (`saveClass`)
 
 ```xml
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:saveClass>

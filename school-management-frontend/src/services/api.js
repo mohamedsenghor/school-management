@@ -134,7 +134,7 @@ export const sectorsSOAPRequest = async (soapBody) => {
 // Service pour les Classes
 export const classesService = {
     getAll: async () => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:getAllClasses/>
@@ -144,7 +144,7 @@ export const classesService = {
     },
 
     getById: async (classId) => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:getClass>
@@ -156,7 +156,7 @@ export const classesService = {
     },
 
     save: async (classe) => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:saveClass>
@@ -172,7 +172,7 @@ export const classesService = {
     },
 
     update: async (classe) => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
     <soapenv:Header/>
     <soapenv:Body>
         <sch:updateClass>
@@ -189,7 +189,7 @@ export const classesService = {
     },
 
     delete: async (classId) => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
     <soapenv:Header/>
     <soapenv:Body>
         <sch:deleteClass>
@@ -204,7 +204,7 @@ export const classesService = {
 // Service pour les Secteurs - basé sur le README
 export const sectorsService = {
     getAll: async () => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:getAllSectors/>
@@ -214,7 +214,7 @@ export const sectorsService = {
     },
 
     getById: async (sectorId) => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:getSector>
@@ -226,7 +226,7 @@ export const sectorsService = {
     },
 
     save: async (sector) => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <sch:saveSector>
@@ -240,7 +240,7 @@ export const sectorsService = {
     },
 
     update: async (sector) => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
     <soapenv:Header/>
     <soapenv:Body>
         <sch:updateSector>
@@ -255,7 +255,7 @@ export const sectorsService = {
     },
 
     delete: async (sectorId) => {
-        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://bassine.com/school-management">
+        const soapBody = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sch="http://blackms.dev/school-management">
     <soapenv:Header/>
     <soapenv:Body>
         <sch:deleteSector>

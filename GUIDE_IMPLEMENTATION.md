@@ -26,7 +26,7 @@ cd school-management
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.bassine</groupId>
+    <groupId>dev.blackms</groupId>
     <artifactId>school-management</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -179,7 +179,7 @@ INSERT INTO classes (class_name, description, sector_id) VALUES
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>com.bassine</groupId>
+        <groupId>dev.blackms</groupId>
         <artifactId>school-management</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -232,7 +232,7 @@ db.urlDev=jdbc:mysql://localhost:3306/sectors_classes_db?useUnicode=true&useJDBC
 #### **metier/src/main/java/dev/black/metier/config/HibernateUtil.java**
 
 ```java
-package com.bassine.metier.config;
+package dev.blackms.metier.config;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -240,8 +240,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
-import entity.com.bassine.metier.SectorsEntity;
-import entity.com.bassine.metier.ClassesEntity;
+import entity.dev.blackms.metier.SectorsEntity;
+import entity.dev.blackms.metier.ClassesEntity;
 
 import java.util.Properties;
 
@@ -291,7 +291,7 @@ public class HibernateUtil {
 #### **metier/src/main/java/dev/black/metier/entity/SectorsEntity.java**
 
 ```java
-package com.bassine.metier.entity;
+package dev.blackms.metier.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -382,7 +382,7 @@ public class SectorsEntity implements Serializable {
 #### **metier/src/main/java/dev/black/metier/entity/ClassesEntity.java**
 
 ```java
-package com.bassine.metier.entity;
+package dev.blackms.metier.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -472,7 +472,7 @@ public class ClassesEntity implements Serializable {
 #### **metier/src/main/java/dev/black/metier/dto/SectorsDto.java**
 
 ```java
-package com.bassine.metier.dto;
+package dev.blackms.metier.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -529,7 +529,7 @@ public class SectorsDto implements Serializable {
 #### **metier/src/main/java/dev/black/metier/dto/ClassesDto.java**
 
 ```java
-package com.bassine.metier.dto;
+package dev.blackms.metier.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -601,8 +601,9 @@ public class ClassesDto implements Serializable {
 ### 4.1 Interface Repository générique
 
 **metier/src/main/java/dev/black/metier/dao/Repository.java**
+
 ```java
-package com.bassine.metier.dao;
+package dev.blackms.metier.dao;
 
 import java.util.List;
 import java.util.Optional;
@@ -626,10 +627,11 @@ public interface Repository<T> {
 ### 4.2 Implémentation Repository générique
 
 **metier/src/main/java/dev/black/metier/dao/RepositoryImpl.java**
-```java
-package com.bassine.metier.dao;
 
-import config.com.bassine.metier.HibernateUtil;
+```java
+package dev.blackms.metier.dao;
+
+import config.dev.blackms.metier.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -727,10 +729,11 @@ public class RepositoryImpl<T> implements Repository<T> {
 ### 4.3 Interface DAO spécialisée pour Sectors
 
 **metier/src/main/java/dev/black/metier/dao/ISectorsDao.java**
-```java
-package com.bassine.metier.dao;
 
-import entity.com.bassine.metier.SectorsEntity;
+```java
+package dev.blackms.metier.dao;
+
+import entity.dev.blackms.metier.SectorsEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -752,11 +755,12 @@ public interface ISectorsDao extends Repository<SectorsEntity> {
 ### 4.4 Implémentation DAO pour Sectors
 
 **metier/src/main/java/dev/black/metier/dao/SectorsDao.java**
-```java
-package com.bassine.metier.dao;
 
-import config.com.bassine.metier.HibernateUtil;
-import entity.com.bassine.metier.SectorsEntity;
+```java
+package dev.blackms.metier.dao;
+
+import config.dev.blackms.metier.HibernateUtil;
+import entity.dev.blackms.metier.SectorsEntity;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -850,10 +854,11 @@ public class SectorsDao extends RepositoryImpl<SectorsEntity> implements ISector
 ### 4.5 Interface DAO spécialisée pour Classes
 
 **metier/src/main/java/dev/black/metier/dao/IClassesDao.java**
-```java
-package com.bassine.metier.dao;
 
-import entity.com.bassine.metier.ClassesEntity;
+```java
+package dev.blackms.metier.dao;
+
+import entity.dev.blackms.metier.ClassesEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -875,11 +880,12 @@ public interface IClassesDao extends Repository<ClassesEntity> {
 ### 4.6 Implémentation DAO pour Classes
 
 **metier/src/main/java/dev/black/metier/dao/ClassesDao.java**
-```java
-package com.bassine.metier.dao;
 
-import config.com.bassine.metier.HibernateUtil;
-import entity.com.bassine.metier.ClassesEntity;
+```java
+package dev.blackms.metier.dao;
+
+import config.dev.blackms.metier.HibernateUtil;
+import entity.dev.blackms.metier.ClassesEntity;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
@@ -982,11 +988,12 @@ public class ClassesDao extends RepositoryImpl<ClassesEntity> implements IClasse
 ### 5.1 Mapper pour Sectors
 
 **metier/src/main/java/dev/black/metier/mapper/SectorsMapper.java**
-```java
-package com.bassine.metier.mapper;
 
-import dto.com.bassine.metier.SectorsDto;
-import entity.com.bassine.metier.SectorsEntity;
+```java
+package dev.blackms.metier.mapper;
+
+import dto.dev.blackms.metier.SectorsDto;
+import entity.dev.blackms.metier.SectorsEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -1070,12 +1077,13 @@ public class SectorsMapper {
 ### 5.2 Mapper pour Classes
 
 **metier/src/main/java/dev/black/metier/mapper/ClassesMapper.java**
-```java
-package com.bassine.metier.mapper;
 
-import dto.com.bassine.metier.ClassesDto;
-import entity.com.bassine.metier.ClassesEntity;
-import entity.com.bassine.metier.SectorsEntity;
+```java
+package dev.blackms.metier.mapper;
+
+import dto.dev.blackms.metier.ClassesDto;
+import entity.dev.blackms.metier.ClassesEntity;
+import entity.dev.blackms.metier.SectorsEntity;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -1174,10 +1182,11 @@ public class ClassesMapper {
 ### 6.1 Interface Service pour Sectors
 
 **metier/src/main/java/dev/black/metier/service/ISectorsService.java**
-```java
-package com.bassine.metier.service;
 
-import dto.com.bassine.metier.SectorsDto;
+```java
+package dev.blackms.metier.service;
+
+import dto.dev.blackms.metier.SectorsDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -1216,14 +1225,15 @@ public interface ISectorsService {
 ### 6.2 Implémentation Service pour Sectors
 
 **metier/src/main/java/dev/black/metier/service/SectorsService.java**
-```java
-package com.bassine.metier.service;
 
-import dao.com.bassine.metier.ISectorsDao;
-import dao.com.bassine.metier.SectorsDao;
-import dto.com.bassine.metier.SectorsDto;
-import entity.com.bassine.metier.SectorsEntity;
-import mapper.com.bassine.metier.SectorsMapper;
+```java
+package dev.blackms.metier.service;
+
+import dao.dev.blackms.metier.ISectorsDao;
+import dao.dev.blackms.metier.SectorsDao;
+import dto.dev.blackms.metier.SectorsDto;
+import entity.dev.blackms.metier.SectorsEntity;
+import mapper.dev.blackms.metier.SectorsMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -1371,10 +1381,11 @@ public class SectorsService implements ISectorsService {
 ### 6.3 Interface Service pour Classes
 
 **metier/src/main/java/dev/black/metier/service/IClassesService.java**
-```java
-package com.bassine.metier.service;
 
-import dto.com.bassine.metier.ClassesDto;
+```java
+package dev.blackms.metier.service;
+
+import dto.dev.blackms.metier.ClassesDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -1413,17 +1424,18 @@ public interface IClassesService {
 ### 6.4 Implémentation Service pour Classes
 
 **metier/src/main/java/dev/black/metier/service/ClassesService.java**
-```java
-package com.bassine.metier.service;
 
-import dao.com.bassine.metier.IClassesDao;
-import dao.com.bassine.metier.ClassesDao;
-import dao.com.bassine.metier.ISectorsDao;
-import dao.com.bassine.metier.SectorsDao;
-import dto.com.bassine.metier.ClassesDto;
-import entity.com.bassine.metier.ClassesEntity;
-import entity.com.bassine.metier.SectorsEntity;
-import mapper.com.bassine.metier.ClassesMapper;
+```java
+package dev.blackms.metier.service;
+
+import dao.dev.blackms.metier.IClassesDao;
+import dao.dev.blackms.metier.ClassesDao;
+import dao.dev.blackms.metier.ISectorsDao;
+import dao.dev.blackms.metier.SectorsDao;
+import dto.dev.blackms.metier.ClassesDto;
+import entity.dev.blackms.metier.ClassesEntity;
+import entity.dev.blackms.metier.SectorsEntity;
+import mapper.dev.blackms.metier.ClassesMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -1589,6 +1601,7 @@ public class ClassesService implements IClassesService {
 ### 7.1 Configuration POM du module SOAP
 
 **soap/pom.xml**
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -1598,7 +1611,7 @@ public class ClassesService implements IClassesService {
     <modelVersion>4.0.0</modelVersion>
     
     <parent>
-        <groupId>com.bassine</groupId>
+        <groupId>dev.blackms</groupId>
         <artifactId>school-management</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -1609,7 +1622,7 @@ public class ClassesService implements IClassesService {
     <dependencies>
         <!-- Dépendance vers le module métier -->
         <dependency>
-            <groupId>com.bassine</groupId>
+            <groupId>dev.blackms</groupId>
             <artifactId>metier</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -1677,17 +1690,18 @@ public class ClassesService implements IClassesService {
 ### 7.2 Interface Web Service pour Sectors
 
 **soap/src/main/java/dev/black/soap/webservice/service/SectorsWebService.java**
-```java
-package com.bassine.soap.webservice.service;
 
-import dto.com.bassine.metier.SectorsDto;
+```java
+package dev.blackms.soap.webservice.service;
+
+import dto.dev.blackms.metier.SectorsDto;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 
 import java.util.List;
 
-@WebService(name = "SectorsWebService", targetNamespace = "http://bassine.com/school-management")
+@WebService(name = "SectorsWebService", targetNamespace = "http://blackms.dev/school-management")
 public interface SectorsWebService {
 
     @WebMethod(operationName = "getSector")
@@ -1722,12 +1736,13 @@ public interface SectorsWebService {
 ### 7.3 Implémentation Web Service pour Sectors
 
 **soap/src/main/java/dev/black/soap/webservice/service/SectorsWebServiceImpl.java**
-```java
-package com.bassine.soap.webservice.service;
 
-import dto.com.bassine.metier.SectorsDto;
-import service.com.bassine.metier.ISectorsService;
-import service.com.bassine.metier.SectorsService;
+```java
+package dev.blackms.soap.webservice.service;
+
+import dto.dev.blackms.metier.SectorsDto;
+import service.dev.blackms.metier.ISectorsService;
+import service.dev.blackms.metier.SectorsService;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
@@ -1736,10 +1751,10 @@ import java.util.List;
 import java.util.Optional;
 
 @WebService(
-    endpointInterface = "com.bassine.soap.webservice.service.SectorsWebService",
+    endpointInterface = "dev.blackms.soap.webservice.service.SectorsWebService",
     serviceName = "SectorsWebService",
     portName = "SectorsWebServicePort",
-    targetNamespace = "http://bassine.com/school-management"
+    targetNamespace = "http://blackms.dev/school-management"
 )
 public class SectorsWebServiceImpl implements SectorsWebService {
 
@@ -1876,17 +1891,18 @@ public class SectorsWebServiceImpl implements SectorsWebService {
 ### 7.4 Interface Web Service pour Classes
 
 **soap/src/main/java/dev/black/soap/webservice/service/ClassesWebService.java**
-```java
-package com.bassine.soap.webservice.service;
 
-import dto.com.bassine.metier.ClassesDto;
+```java
+package dev.blackms.soap.webservice.service;
+
+import dto.dev.blackms.metier.ClassesDto;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
 
 import java.util.List;
 
-@WebService(name = "ClassesWebService", targetNamespace = "http://bassine.com/school-management")
+@WebService(name = "ClassesWebService", targetNamespace = "http://blackms.dev/school-management")
 public interface ClassesWebService {
 
     @WebMethod(operationName = "getClass")
@@ -1922,12 +1938,13 @@ public interface ClassesWebService {
 ### 7.5 Implémentation Web Service pour Classes
 
 **soap/src/main/java/dev/black/soap/webservice/service/ClassesWebServiceImpl.java**
-```java
-package com.bassine.soap.webservice.service;
 
-import dto.com.bassine.metier.ClassesDto;
-import service.com.bassine.metier.IClassesService;
-import service.com.bassine.metier.ClassesService;
+```java
+package dev.blackms.soap.webservice.service;
+
+import dto.dev.blackms.metier.ClassesDto;
+import service.dev.blackms.metier.IClassesService;
+import service.dev.blackms.metier.ClassesService;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebService;
@@ -1936,10 +1953,10 @@ import java.util.List;
 import java.util.Optional;
 
 @WebService(
-    endpointInterface = "com.bassine.soap.webservice.service.ClassesWebService",
+    endpointInterface = "dev.blackms.soap.webservice.service.ClassesWebService",
     serviceName = "ClassesWebService",
     portName = "ClassesWebServicePort",
-    targetNamespace = "http://bassine.com/school-management"
+    targetNamespace = "http://blackms.dev/school-management"
 )
 public class ClassesWebServiceImpl implements ClassesWebService {
 
@@ -2082,6 +2099,7 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ### 8.1 Configuration Web.xml
 
 **soap/src/main/webapp/WEB-INF/web.xml**
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
@@ -2138,6 +2156,7 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ### 8.2 Configuration JAX-WS
 
 **soap/src/main/webapp/WEB-INF/sun-jaxws.xml**
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <endpoints xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0">
@@ -2145,13 +2164,13 @@ public class ClassesWebServiceImpl implements ClassesWebService {
     <!-- Configuration pour Sectors Web Service -->
     <endpoint
         name="SectorsWebService"
-        implementation="com.bassine.soap.webservice.service.SectorsWebServiceImpl"
+        implementation="dev.blackms.soap.webservice.service.SectorsWebServiceImpl"
         url-pattern="/sectorsWebService" />
 
     <!-- Configuration pour Classes Web Service -->
     <endpoint
         name="ClassesWebService"
-        implementation="com.bassine.soap.webservice.service.ClassesWebServiceImpl"
+        implementation="dev.blackms.soap.webservice.service.ClassesWebServiceImpl"
         url-pattern="/classesWebService" />
 
 </endpoints>
@@ -2160,6 +2179,7 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ### 8.3 Page d'accueil
 
 **soap/src/main/webapp/index.jsp**
+
 ```jsp
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -2205,9 +2225,10 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ### 9.1 Exemples de requêtes SOAP pour Sectors
 
 #### Récupérer tous les secteurs
+
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-                  xmlns:web="http://bassine.com/school-management">
+                  xmlns:web="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <web:getAllSectors/>
@@ -2216,9 +2237,10 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ```
 
 #### Créer un nouveau secteur
+
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-                  xmlns:web="http://bassine.com/school-management">
+                  xmlns:web="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <web:saveSector>
@@ -2231,9 +2253,10 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ```
 
 #### Récupérer un secteur avec ses classes
+
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-                  xmlns:web="http://bassine.com/school-management">
+                  xmlns:web="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <web:getSectorWithClasses>
@@ -2246,9 +2269,10 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ### 9.2 Exemples de requêtes SOAP pour Classes
 
 #### Récupérer les classes d'un secteur
+
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-                  xmlns:web="http://bassine.com/school-management">
+                  xmlns:web="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <web:getClassesBySector>
@@ -2259,9 +2283,10 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ```
 
 #### Créer une nouvelle classe
+
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-                  xmlns:web="http://bassine.com/school-management">
+                  xmlns:web="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <web:saveClass>
@@ -2276,9 +2301,10 @@ public class ClassesWebServiceImpl implements ClassesWebService {
 ```
 
 #### Rechercher des classes par nom
+
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
-                  xmlns:web="http://bassine.com/school-management">
+                  xmlns:web="http://blackms.dev/school-management">
    <soapenv:Header/>
    <soapenv:Body>
       <web:searchClassesByName>
