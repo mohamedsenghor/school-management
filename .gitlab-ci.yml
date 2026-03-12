@@ -1,0 +1,159 @@
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║          Pipeline CI/CD — school-management (TP3)                        ║
+# ║  test  ──►  build  ──►  docker  ──►  deploy                              ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+#
+# Ce fichier est situé dans TPs/TP3/.gitlab-ci.yml
+# → Configurer GitLab : Settings → CI/CD → General → Custom CI/CD configuration path
+#   Valeur : TPs/TP3/.gitlab-ci.yml
+#
+# Variables à configurer dans GitLab → Settings → CI/CD → Variables :
+#   DEPLOY_SSH_PRIVATE_KEY  Clé SSH privée (protected, masked)
+#   DEPLOY_USER             Utilisateur SSH sur le serveur  (ex: ubuntu)
+#   DEPLOY_HOST             IP/hostname du serveur cible    (ex: 192.168.56.10)
+#   DEPLOY_PATH             Chemin du projet sur le serveur (ex: /home/ubuntu/TP3)
+
+stages:
+  - test
+  - build
+  - docker
+  - deploy
+
+# ─── Variables globales ───────────────────────────────────────────────────────
+variables:
+  BACKEND_IMAGE: "$CI_REGISTRY_IMAGE/backend"
+  FRONTEND_IMAGE: "$CI_REGISTRY_IMAGE/frontend"
+  # Active BuildKit pour des builds plus rapides (layer caching)
+  DOCKER_BUILDKIT: "1"
+  COMPOSE_DOCKER_CLI_BUILD: "1"
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+# ─── Template Docker partagé ──────────────────────────────────────────────────
+.docker_base:
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  STAGE 1 — TEST
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Compile le backend Java et vérifie l'absence d'erreurs de compilation
+test:backend:
+  stage: test
+  image: maven:3.9-eclipse-temurin-21
+  cache:
+    key: "maven-$CI_COMMIT_REF_SLUG"
+    paths:
+      - .m2/repository
+  variables:
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  script:
+    - cd school-management
+    # Copier le template docker pour que Maven trouve database.properties
+    - cp school-management-metier/src/main/resources/database.properties.docker
+      school-management-metier/src/main/resources/database.properties
+    - mvn clean compile --no-transfer-progress
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH
+
+# Vérifie la qualité du code frontend avec ESLint
+test:frontend:
+  stage: test
+  image: node:20-alpine
+  cache:
+    key: "node-frontend-$CI_COMMIT_REF_SLUG"
+    paths:
+      - school-management/school-management-frontend/node_modules
+  script:
+    - cd school-management/school-management-frontend
+    - npm i
+    - npm run lint
+  allow_failure: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  STAGE 2 — BUILD (Construction et push des images Docker)
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Construit l'image backend (Maven multi-stage → Tomcat)
+build:backend:
+  stage: build
+  extends: .docker_base
+  script:
+    - docker build
+      --tag "$BACKEND_IMAGE:$CI_COMMIT_SHA"
+      --tag "$BACKEND_IMAGE:$CI_COMMIT_REF_SLUG"
+      school-management
+    - docker push "$BACKEND_IMAGE:$CI_COMMIT_SHA"
+    - docker push "$BACKEND_IMAGE:$CI_COMMIT_REF_SLUG"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+# Construit l'image frontend (Vite → Nginx)
+build:frontend:
+  stage: build
+  extends: .docker_base
+  script:
+    - docker build
+      --tag "$FRONTEND_IMAGE:$CI_COMMIT_SHA"
+      --tag "$FRONTEND_IMAGE:$CI_COMMIT_REF_SLUG"
+      school-management/school-management-frontend
+    - docker push "$FRONTEND_IMAGE:$CI_COMMIT_SHA"
+    - docker push "$FRONTEND_IMAGE:$CI_COMMIT_REF_SLUG"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  STAGE 3 — DOCKER (Tag :latest sur la branche main uniquement)
+# ══════════════════════════════════════════════════════════════════════════════
+
+docker:tag-latest:
+  stage: docker
+  extends: .docker_base
+  script:
+    - docker pull "$BACKEND_IMAGE:$CI_COMMIT_SHA"
+    - docker tag  "$BACKEND_IMAGE:$CI_COMMIT_SHA" "$BACKEND_IMAGE:latest"
+    - docker push "$BACKEND_IMAGE:latest"
+    - docker pull "$FRONTEND_IMAGE:$CI_COMMIT_SHA"
+    - docker tag  "$FRONTEND_IMAGE:$CI_COMMIT_SHA" "$FRONTEND_IMAGE:latest"
+    - docker push "$FRONTEND_IMAGE:latest"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  STAGE 4 — DEPLOY (Déclenchement manuel — main seulement)
+# ══════════════════════════════════════════════════════════════════════════════
+
+deploy:staging:
+  stage: deploy
+  image: alpine:3.19
+  before_script:
+    - apk add --no-cache openssh-client
+    - eval $(ssh-agent -s)
+    - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+  script:
+    - |
+      ssh "$DEPLOY_USER@$DEPLOY_HOST" "
+        cd $DEPLOY_PATH &&
+        docker compose pull  2>/dev/null || true &&
+        docker compose up --build -d --remove-orphans
+      "
+  environment:
+    name: staging
+    url: "http://$DEPLOY_HOST"
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual

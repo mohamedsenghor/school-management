@@ -1,0 +1,92 @@
+#!/bin/bash
+
+# Couleurs
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
+TOMCAT_HOME="/opt/tomcat10"
+APP_DIR="$TOMCAT_HOME/webapps"
+
+status_tomcat() {
+    if systemctl is-active --quiet tomcat; then
+        echo -e "${GREEN} Tomcat est EN MARCHE${NC}"
+    else
+        echo -e "${RED} Tomcat est ARRÊTÉ${NC}"
+    fi
+}
+
+start_tomcat() {
+    echo -e "${YELLOW}⏳ Démarrage de Tomcat...${NC}"
+    sudo systemctl start tomcat
+    sleep 2
+    status_tomcat
+}
+
+stop_tomcat() {
+    echo -e "${YELLOW}⏳ Arrêt de Tomcat...${NC}"
+    sudo systemctl stop tomcat
+    sleep 2
+    status_tomcat
+}
+
+restart_tomcat() {
+    echo -e "${YELLOW} Redémarrage de Tomcat...${NC}"
+    sudo systemctl restart tomcat
+    sleep 2
+    status_tomcat
+}
+
+deploy_war() {
+    echo -e "${CYAN} Entrez le chemin complet du fichier WAR :${NC}"
+    read -r WAR_PATH
+    if [ -f "$WAR_PATH" ]; then
+        sudo cp "$WAR_PATH" "$APP_DIR/"
+        sudo chown tomcat: "$APP_DIR/$(basename $WAR_PATH)"
+        echo -e "${GREEN} Application déployée : $(basename $WAR_PATH)${NC}"
+        restart_tomcat
+    else
+        echo -e "${RED} Fichier WAR introuvable : $WAR_PATH${NC}"
+    fi
+}
+
+voir_logs() {
+    echo -e "${CYAN} Dernières lignes des logs Tomcat :${NC}"
+    sudo tail -50 $TOMCAT_HOME/logs/catalina.out
+}
+
+show_menu() {
+    clear
+    echo -e "${BLUE}╔══════════════════════════════════════╗${NC}"
+    echo -e "${BLUE}║         TOMCAT DEPLOY MANAGER        ║${NC}"
+    echo -e "${BLUE}╠══════════════════════════════════════╣${NC}"
+    echo -e "${BLUE}║${NC}  ${GREEN}1.${NC} Démarrer Tomcat                  ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}  ${RED}2.${NC}  Arrêter Tomcat                  ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}  ${YELLOW}3.${NC} Redémarrer Tomcat                ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}  ${CYAN}4.${NC} Statut de Tomcat                 ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}  ${CYAN}5.${NC} Déployer une application WAR     ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}  ${CYAN}6.${NC} Voir les logs                    ${BLUE}║${NC}"
+    echo -e "${BLUE}║${NC}  ${RED}0.${NC} Quitter                          ${BLUE}║${NC}"
+    echo -e "${BLUE}╚══════════════════════════════════════╝${NC}"
+    echo -e "${YELLOW}Votre choix :${NC} "
+}
+
+while true; do
+    show_menu
+    read -r choix
+    case $choix in
+        1) start_tomcat ;;
+        2) stop_tomcat ;;
+        3) restart_tomcat ;;
+        4) status_tomcat ;;
+        5) deploy_war ;;
+        6) voir_logs ;;
+        0) echo -e "${GREEN} Au revoir !${NC}"; exit 0 ;;
+        *) echo -e "${RED} Option invalide, réessayez.${NC}" ;;
+    esac
+    echo -e "\n${YELLOW}Appuyez sur Entrée pour continuer...${NC}"
+    read -r
+done
